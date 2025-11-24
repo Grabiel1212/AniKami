@@ -4,18 +4,17 @@ import java.sql.Date;
 
 import jakarta.persistence.Entity;
 
-
 @Entity
+
 public class Usuarios {
 
+    int idUsuario
 
-    int idUsuario;
-    String Nombre_Usuario;
+    String NombreUsuario;
     String correo;
     String contrasena;
     String google_id;
     String avatar_url;
     Date creado_en;
 
-    
 }
