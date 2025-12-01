@@ -1,10 +1,8 @@
-package com.example.demo.entity;
+package com.example.demo.Model;
 
 import java.sql.Date;
 
-import jakarta.persistence.Entity;
 
-@Entity
 public class Mangas {
     
     

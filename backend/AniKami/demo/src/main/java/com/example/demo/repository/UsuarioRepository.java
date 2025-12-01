@@ -1,5 +1,10 @@
 package com.example.demo.repository;
 
-public class UsuarioRepository {
 
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.demo.Model.Usuarios;
+
+public interface UsuarioRepository extends JpaRepository<Usuarios, Integer> {
+           boolean existsByCorreo(String correo); 
 }
