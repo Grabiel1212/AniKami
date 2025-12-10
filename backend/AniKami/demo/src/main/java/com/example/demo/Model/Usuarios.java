@@ -9,10 +9,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Builder
 @Entity
 @Getter
 @Setter
@@ -33,8 +35,8 @@ public class Usuarios {
     String contrasena;
     @Column(name = "Google_ID")
     String google_id;
-    @Column(name = "Avatar_URL")
-    String avatar_url;
+    @Column(name = "foto")
+    String foto;
     @Column(name = "Creado_En")
     Date creado_en;
 
