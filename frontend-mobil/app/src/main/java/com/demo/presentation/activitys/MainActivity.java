@@ -1,12 +1,17 @@
-package com.demo;
+package com.demo.presentation.activitys;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.demo.R;
+import com.demo.presentation.activitys.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,4 +26,11 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
     }
+
+
+    public void loginOnclick(View v){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
 }

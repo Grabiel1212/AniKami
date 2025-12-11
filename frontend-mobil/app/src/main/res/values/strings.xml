@@ -1,3 +1,52 @@
 <resources>
     <string name="app_name">frontend-ankami</string>
+
+    //login
+    <string name="lbl_usuario">Usuario</string>
+    <string name="edt_usuario">Ingrese su usuario</string>
+    <string name="lbl_pass">Contraseña</string>
+    <string name="edt_pass">Ingresa tu constraseña</string>
+    <string name="lbl_recuperarpass_login">¿as olvidado tu contraseña ?</string>
+
+    <string name="btn_inicarsesion">Iniciar sesión</string>
+    <string name="btn_inicargoogle">Continuar con Google</string>
+    <string name="lbl_titulo_login">Iniciar\nSesión</string>
+    <string name="lbl_registrarse_login">Registrate</string>
+
+
+    // regsitro
+
+    <string name="lbl_titulo_registrar">Registrar\nUsuario</string>
+    // paso1
+    <string name="lbl_email_registro">Email</string>
+    <string name="edt_email_registro">Ingrese su correo electronico</string>
+    //paso2
+    <string name="lbl_nombre_registro">Nombre</string>
+    <string name="edt_nombre_registro">Ingrese su nombre</string>
+    <string name="lbl_apellido_registro">Apellido</string>
+    <string name="edt_apellido_registro">Ingrese su Apellido</string>
+    //paso3
+    <string name="lbl_contraseña_registro">Contraseña</string>
+    <string name="edt_contraseña_registro">Ingrese una contraseña</string>
+    <string name="lbl_confirmarcontraseña_registro">Vericar contraseña</string>
+    <string name="edt_confirmarcontraseña_registro">Repetir cintraseña</string>
+
+    //PASO4
+    <string name="lbl_fotoperfil_registro">Foto de Perfil"</string>
+    <string name="edt_selecionarfotoperfil_registro">Seleccionar foto</string>
+
+
+    //botones
+    <string name="btn_siguiente_registrar">Siguiente</string>
+
+
+    // RECUPERACION DE CONTRASEÑA
+    <string name="lbl_titulo_recovery">Recuperacion</string>
+    <string name="btn_atras">Atrás</string>
+
+    <string name="lbl_codigoverificacion_recovery">Codigo de Verificación</string>
+    <string name="edt_codigoverificacion_recovery">Ingrese el codigo de verificación</string>
+    <string name="edt_reenviarcoidgo_recovery">reenviar codigo</string>
+
+
 </resources>

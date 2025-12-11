@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.activitys.register.RegisterActivity">
+
+
+    <TextView
+        android:id="@+id/lbl_titulo_registrar"
+        android:layout_width="175dp"
+        android:layout_height="109dp"
+        android:layout_marginStart="9dp"
+        android:text="@string/lbl_titulo_registrar"
+        android:textColor="@color/purple"
+        android:textSize="37sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.297" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-40dp"
+        android:layout_marginEnd="199dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@mipmap/border_superior_resgister" />
+
+
+
+    <ViewFlipper
+        android:id="@+id/flipper"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="32dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_siguiente_resgistrar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_titulo_registrar"
+        app:layout_constraintVertical_bias="1.0">
+
+        <LinearLayout
+            android:id="@+id/layout_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/lbl_email_resgitro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lbl_email_registro"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <EditText
+                android:id="@+id/edt_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/edt_email_registro"
+                android:inputType="textEmailAddress" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_datospersonales"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/lbl_nombre_registro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lbl_nombre_registro"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <EditText
+                android:id="@+id/edt_nombre_registro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/edt_nombre_registro"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/lbl_apellido_registro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lbl_apellido_registro"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <EditText
+                android:id="@+id/edt_apellido_registro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/edt_apellido_registro"
+                android:inputType="text" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_contraseña"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/lbl_contraseña_registro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lbl_contraseña_registro"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <EditText
+                android:id="@+id/edt_contraseña_registro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/edt_contraseña_registro"
+                android:inputType="textPassword" />
+
+            <TextView
+                android:id="@+id/lbl_confirmarcontraseña_registro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lbl_confirmarcontraseña_registro"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <EditText
+                android:id="@+id/edt_confirmarcontraseña_registro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/edt_confirmarcontraseña_registro"
+                android:inputType="textPassword" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_foto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/lbl_foto_registro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lbl_fotoperfil_registro"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Imagen para previsualizar -->
+            <ImageView
+                android:id="@+id/img_preview_foto"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/borde_redondo"
+                android:scaleType="centerCrop" />
+
+            <!-- Texto clickeable para seleccionar foto -->
+            <TextView
+                android:id="@+id/txt_seleccionar_foto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/edt_selecionarfotoperfil_registro"
+                android:textColor="#5A00FF"
+                android:textStyle="bold"
+                android:padding="8dp"
+                android:textSize="14sp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/txt_omitir_foto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Omitir"
+                android:textColor="#00C853"
+            android:textStyle="bold"
+            android:padding="6dp"
+            android:textSize="14sp"
+            android:layout_marginTop="6dp"
+            android:clickable="true"
+            android:focusable="true" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_preferencias"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/lbl_preferencias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Selecciona tus preferencias"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupPreferencias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleLine="false"
+                app:selectionRequired="false"
+                app:singleSelection="false"
+                app:chipSpacing="12dp">
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/txt_omitir_preferencias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Omitir"
+                android:textColor="#00C853"
+            android:textStyle="bold"
+            android:padding="6dp"
+            android:textSize="14sp"
+            android:layout_marginTop="18dp"
+            android:clickable="true"
+            android:focusable="true" />
+
+        </LinearLayout>
+
+
+
+
+    </ViewFlipper>
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="228dp"
+        android:layout_marginTop="552dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/border_inferior_register" />
+
+
+    <Button
+        android:id="@+id/btn_siguiente_resgistrar"
+        android:layout_width="190dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/btn_primary"
+        android:text="@string/btn_siguiente_registrar"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.89" />
+
+    <Button
+        android:id="@+id/btn_atras_registrar"
+        android:layout_width="185dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/btn_secondary"
+        android:gravity="center"
+        android:text="Atrás"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_siguiente_resgistrar" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="158dp"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.94"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.135"
+        app:srcCompat="@mipmap/logo_1" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

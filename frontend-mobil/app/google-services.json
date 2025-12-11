@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "368675423322",
+    "project_id": "amikami-43580",
+    "storage_bucket": "amikami-43580.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368675423322:android:542420435554f6198c0463",
+        "android_client_info": {
+          "package_name": "com.demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "368675423322-nl6ehhiq4dujtte0la8tvqh47bcaugbf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEG1yE7Q3wJ8GpFbi8FWbyxM9ai_j_BoU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "368675423322-nl6ehhiq4dujtte0la8tvqh47bcaugbf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
