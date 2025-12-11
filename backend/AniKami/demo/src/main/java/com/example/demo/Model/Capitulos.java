@@ -1,4 +1,4 @@
-package com.example.demo.Model;
+package com.example.demo.model;
 
 import java.sql.Date;
 
@@ -16,14 +16,14 @@ import lombok.Data;
 public class Capitulos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id ;
+    int id;
     @Column(name = "manga_id")
-    int manga_id ;
+    int manga_id;
     @Column(name = "numero")
     int numero;
     @Column(name = "titulo")
     String imagen_url;
     @Column(name = "publicado_en")
     Date publicado_en;
-    
+
 }

@@ -8,23 +8,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
+@Table(name = "usuario_preferencia_genero")
 @Data
-@Getter
-@Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "generos")
-public class Generos {
+@AllArgsConstructor
+public class UsuarioPreferenciaGenero {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "nombre")
-    private String nombre;
-    @Column(name = "descripcion")
-    private String descripcion;
+
+    @Column(name = "usuario_id", nullable = false)
+    private Integer usuarioId;
+
+    @Column(name = "genero_id", nullable = false)
+    private Integer generoId;
 }

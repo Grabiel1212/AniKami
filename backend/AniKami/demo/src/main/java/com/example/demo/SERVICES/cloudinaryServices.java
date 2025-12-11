@@ -1,4 +1,4 @@
-package com.example.demo.SERVICES;
+package com.example.demo.services;
 
 import java.io.IOException;
 import java.util.HashMap;

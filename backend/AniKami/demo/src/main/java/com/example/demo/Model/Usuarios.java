@@ -1,4 +1,4 @@
-package com.example.demo.Model;
+package com.example.demo.model;
 
 import java.sql.Date;
 
@@ -14,30 +14,36 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Builder
 @Entity
+@Table(name = "usuarios")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "usuarios")
+@Builder
 public class Usuarios {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int idUsuario;
-    @Column(name = "NombreUsuario")
-    String NombreUsuario;
+    @Column(name = "id")
+    private Integer idUsuario;
+
+    @Column(name = "nombre_usuario")
+    private String nombreUsuario;
+
     @Column(name = "correo")
-    String correo;
-    @Column(name = "Contrasena")
-    String contrasena;
-    @Column(name = "Google_ID")
-    String google_id;
+    private String correo;
+
+    @Column(name = "contrasena")
+    private String contrasena;
+
+    @Column(name = "google_id")
+    private String googleId;
+
     @Column(name = "foto")
-    String foto;
-    @Column(name = "Creado_En")
-    Date creado_en;
+    private String foto;
+
+    @Column(name = "creado_en", updatable = false, insertable = false)
+    private Date creadoEn;
 
 }
