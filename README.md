@@ -17,11 +17,11 @@
 Incluye biblioteca personal, lector integrado, sistema de recomendaciones y autenticación segura.
 
 📌 **Tecnologías principales:**
-- Android (Kotlin / Java)
+- Android (Java)
 - Spring Boot (Backend)
 - MySQL (Base de datos)
 - Cloudinary (Almacenamiento de imágenes / capítulos)
-- JWT + Google Sign-In (Autenticación)
+-  Google Sign-In (Autenticación)
 
 ---
 
@@ -100,5 +100,5 @@ Incluye biblioteca personal, lector integrado, sistema de recomendaciones y aute
 ---
 
 ## 👤 Autor
-**Aamikami Dev Team**
+**JUAN GRABIEL BARBOZA Y JULIO CESAE BUSTAMANTE**
 
