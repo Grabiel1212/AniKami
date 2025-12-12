@@ -1,39 +1,103 @@
-Aamikami — Aplicación Android para Lectura de Manga
-📘 Descripción del Proyecto
+# 🌸 Aamikami — Android Manga Reader App
 
-Aamikami es una aplicación móvil  para leer, explorar y gestionar mangas japoneses.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/95fdef63-e7e7-4293-8882-2a330a3372a0" width="70%" style="border-radius:12px;">
+</p>
+
+<p align="center">
+  <strong>Aplicación Android para leer, explorar y gestionar mangas con un diseño moderno y backend robusto.</strong>
+</p>
+
+---
+
+## 🚀 Descripción del Proyecto
+
+**Aamikami** es una aplicación móvil diseñada para ofrecer una experiencia fluida en la lectura de manga japonés.  
 Incluye biblioteca personal, lector integrado, sistema de recomendaciones y autenticación segura.
 
-El backend está desarrollado en Spring Boot, con MySQL como base de datos y Cloudinary para almacenamiento de imágenes/capítulos.
+📌 **Tecnologías principales:**
+- Android (Kotlin / Java)
+- Spring Boot (Backend)
+- MySQL (Base de datos)
+- Cloudinary (Almacenamiento de imágenes / capítulos)
+- JWT + Google Sign-In (Autenticación)
 
-🚀 Características Principales
-🔹 Interfaz Moderna
+---
 
-Navegación fluida
+## ✨ Características Principales
 
-🔹 Biblioteca Personal
+### 🔹 Interfaz Moderna
+- Navegación fluida e intuitiva  
+- Diseño limpio y estético  
 
-Favoritos
+### 🔹 Biblioteca Personal
+- Lista de favoritos  
+- Progreso de lectura  
+- Gestión de mangas guardados  
 
-🔹 Exploración y Búsqueda
+### 🔹 Exploración y Búsqueda
+- Mangas populares y en tendencia  
+- Nuevos agregados  
+- Filtro por géneros  
+- Búsqueda por título o autor  
 
-Mangas populares, tendencias y recientes
+### 🔹 Lector Integrado
+- Lectura página por página  
+- Modo vertical  
+- Imágenes desde Cloudinary  
 
-Filtro por géneros
+### 🔹 Sistema de Usuarios
+- Registro con Email y Password  
+- Login con Google  
+- Perfiles personalizados  
 
-Búsqueda por título o autor
+---
 
+## 🗄️ Diagrama de la Base de Datos
 
-🔹 Lector Integrado
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/95fdef63-e7e7-4293-8882-2a330a3372a0" width="85%" style="border-radius:12px; box-shadow:0 0 10px #999;">
+</p>
 
-Lectura página por página
+---
 
-🔹 Sistema de Usuarios
+## 🛠️ Tecnologías y Herramientas
 
-Registro e inicio de sesión (Email / Password)
+<table>
+<tr>
+  <td><strong>Frontend (App)</strong></td>
+  <td>Android Studio, Kotlin/Java, Material Design</td>
+</tr>
+<tr>
+  <td><strong>Backend</strong></td>
+  <td>Spring Boot, REST API</td>
+</tr>
+<tr>
+  <td><strong>Base de Datos</strong></td>
+  <td>MySQL, JPA/Hibernate</td>
+</tr>
+<tr>
+  <td><strong>Media Storage</strong></td>
+  <td>Cloudinary</td>
+</tr>
+<tr>
+  <td><strong>Autenticación</strong></td>
+  <td>JWT, Google Sign-In</td>
+</tr>
+</table>
 
-Google Sign-In
+---
 
+## 📱 Preview de la App *(Próximamente)*
+> Aquí podrás agregar screenshots de tu app más adelante.
 
-<img width="1920" height="1080" alt="Presentación Anime Manga Dibujos Japón Ilustrado Blanco y Negro" src="https://github.com/user-attachments/assets/95fdef63-e7e7-4293-8882-2a330a3372a0" />
+---
+
+## 🧑‍💻 Estado del Proyecto
+🚧 En desarrollo — actualizado constantemente.
+
+---
+
+## 👤 Autor
+**Aamikami Dev Team**
 
