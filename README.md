@@ -1,7 +1,8 @@
-# 🌸 Aamikami — Android Manga Reader App
+# 🌸 Anikami — Android Manga Reader App
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/95fdef63-e7e7-4293-8882-2a330a3372a0" width="70%" style="border-radius:12px;">
+ <img width="1920" height="1080" alt="Presentación Anime Manga Dibujos Japón Ilustrado Blanco y Negro (1)" src="https://github.com/user-attachments/assets/0ebe0c48-b240-4407-9101-a635b60e0cc5" />
+
 </p>
 
 <p align="center">
@@ -12,7 +13,7 @@
 
 ## 🚀 Descripción del Proyecto
 
-**Aamikami** es una aplicación móvil diseñada para ofrecer una experiencia fluida en la lectura de manga japonés.  
+**Anikami** es una aplicación móvil diseñada para ofrecer una experiencia fluida en la lectura de manga japonés.  
 Incluye biblioteca personal, lector integrado, sistema de recomendaciones y autenticación segura.
 
 📌 **Tecnologías principales:**
