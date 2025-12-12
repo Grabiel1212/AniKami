@@ -26,18 +26,45 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView txtSeleccionarFoto, txtOmitirFoto, txtOmitirPreferencias;
     private PermissionManager permissionManager;
 
+    private String googleId;
+    private String email;
+    private TipoRegistro tipoRegistro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        // Recibir datos del intent
+        googleId = getIntent().getStringExtra("googleId");
+        email = getIntent().getStringExtra("email");
+
+        // RECIBIR TIPO REGISTRO ⇦ ESTA ES LA CLAVE
+        String tipo = getIntent().getStringExtra("tipoRegistro");
+
+        if ("GOOGLE".equals(tipo)) {
+            tipoRegistro = TipoRegistro.GOOGLE;
+        } else {
+            tipoRegistro = TipoRegistro.EMAIL;
+        }
+
+        // Inicializar flujo
+        flow = new RegisterFlowManager(tipoRegistro);
+
         initViews();
         initManagers();
         initClicks();
+
+        precargarDatos();
         actualizarVista();
     }
 
+    private void precargarDatos() {
+        if (tipoRegistro == TipoRegistro.GOOGLE) {
+            // ejemplo si tienes campos:
+            // editTextEmail.setText(email);
+        }
+    }
 
     private void initViews() {
         flipper = findViewById(R.id.flipper);
@@ -54,7 +81,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void initManagers() {
-        flow = new RegisterFlowManager(TipoRegistro.EMAIL);
         permissionManager = new PermissionManager(this, imgPreview);
     }
 
@@ -83,13 +109,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-
-    // =============================
-    //        UI
-    // =============================
-
     private void actualizarVista() {
-
         flipper.setDisplayedChild(flow.getPasoActual().ordinal());
 
         btnAtras.setEnabled(!flow.esPrimerPaso());
@@ -97,11 +117,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         btnSiguiente.setText(flow.esUltimoPaso() ? "Finalizar" : "Siguiente");
     }
-
-
-    // =============================
-    //   PERMISOS/GALERÍA
-    // =============================
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -104,14 +104,16 @@ public class LoginActivity extends AppCompatActivity {
                 edtPassword.getText().toString()
         );
         login.iniciarSesion();
-
-
     }
 
     public void onClickLoginGoogle(View v){
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_GOOGLE);
+        // cerrar sesión previa para forzar selección de cuenta
+        mGoogleSignInClient.signOut().addOnCompleteListener(task -> {
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, RC_GOOGLE);
+        });
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -131,23 +133,32 @@ public class LoginActivity extends AppCompatActivity {
             String email = account.getEmail();
             String nombre = account.getDisplayName();
             String foto = account.getPhotoUrl() != null ? account.getPhotoUrl().toString() : null;
-
             String idToken = account.getIdToken(); // Token para tu backend
+
+            // ========================
+            // Mostrar datos en Logcat
+            // ========================
+            android.util.Log.d("LoginGoogleDebug", "Google ID seleccionado: " + googleId);
+            android.util.Log.d("LoginGoogleDebug", "Email seleccionado: " + email);
+            android.util.Log.d("LoginGoogleDebug", "Nombre: " + nombre);
+            android.util.Log.d("LoginGoogleDebug", "Foto URL: " + foto);
+            android.util.Log.d("LoginGoogleDebug", "ID Token: " + idToken);
+
+            // También puedes mostrar un Toast temporal si quieres
+            // Toast.makeText(this, "Google ID: " + googleId, Toast.LENGTH_SHORT).show();
 
             // Llamar a tu acción LoginGoogle
             LoginGoogle loginGoogle = new LoginGoogle(
                     this,
                     googleId,
-                    email,
-                    nombre,
-                    foto,
-                    idToken
+                    email
             );
 
             loginGoogle.iniciarSesion();
 
         } catch (ApiException e) {
             e.printStackTrace();
+            android.util.Log.e("LoginGoogleDebug", "Error al iniciar sesión con Google", e);
         }
     }
 

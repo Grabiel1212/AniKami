@@ -8,11 +8,10 @@ public class RegisterFlowManager {
     public RegisterFlowManager(TipoRegistro tipoRegistro){
         this.tipo = tipoRegistro;
 
-        if(tipoRegistro == TipoRegistro.GOOGLE){
-            // Iniciar directamente en datos personales
-            this.pasoActual = RegistroPasos.DATOS_PERSONALES_USUARIO;
-        } else {
+        if(tipoRegistro == TipoRegistro.EMAIL){
             this.pasoActual = RegistroPasos.EMAIL_USUARIO;
+        } else {
+            this.pasoActual = RegistroPasos.DATOS_PERSONALES_USUARIO;
         }
     }
 
@@ -29,7 +28,6 @@ public class RegisterFlowManager {
 
             case DATOS_PERSONALES_USUARIO:
                 if(tipo == TipoRegistro.GOOGLE){
-                    // Saltar contraseña
                     pasoActual = RegistroPasos.FOTO_USUARIO;
                 } else {
                     pasoActual = RegistroPasos.CONTRASEÑA_USUARIO;
@@ -56,7 +54,6 @@ public class RegisterFlowManager {
 
             case FOTO_USUARIO:
                 if(tipo == TipoRegistro.GOOGLE){
-                    // Ir directo atrás a datos personales
                     pasoActual = RegistroPasos.DATOS_PERSONALES_USUARIO;
                 } else {
                     pasoActual = RegistroPasos.CONTRASEÑA_USUARIO;
@@ -69,7 +66,6 @@ public class RegisterFlowManager {
 
             case DATOS_PERSONALES_USUARIO:
                 if(tipo == TipoRegistro.GOOGLE){
-                    // Ya no existe paso anterior
                     pasoActual = RegistroPasos.DATOS_PERSONALES_USUARIO;
                 } else {
                     pasoActual = RegistroPasos.EMAIL_USUARIO;

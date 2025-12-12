@@ -1,51 +1,73 @@
 package com.demo.presentation.activitys.login.action;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
+
+import androidx.lifecycle.Observer;
+
+import com.demo.data.common.BaseResponse;
+import com.demo.data.model.LoginData;
+import com.demo.data.model.Usuario;
+import com.demo.data.repocitory.UsuarioRepository;
+import com.demo.presentation.activitys.home.HomeActivity;
+import com.demo.presentation.activitys.register.RegisterActivity;
+import com.google.gson.Gson;
 
 public class LoginGoogle {
 
-    private Context context;
-    private String googleId;
-    private String email;
-    private String nombre;
-    private String foto;
-    private String idToken;
+    private final Context context;
+    private final String googleId;
+    private final String email;
+    private final UsuarioRepository usuarioRepository;
 
-    public LoginGoogle(Context context, String googleId, String email, String nombre, String foto, String idToken) {
+    public LoginGoogle(Context context, String googleId, String email) {
         this.context = context;
         this.googleId = googleId;
         this.email = email;
-        this.nombre = nombre;
-        this.foto = foto;
-        this.idToken = idToken;
+        this.usuarioRepository = new UsuarioRepository();
     }
 
     public void iniciarSesion() {
-
-        // Aquí implementas tu llamada a la API usando Retrofit, Volley o HttpURLConnection
-        // Ejemplo ficticio:
-
-        /*
-        ApiClient.getService().loginGoogle(new LoginGoogleRequest(googleId, email, nombre, foto, idToken))
-                .enqueue(new Callback<LoginResponse>() {
+        usuarioRepository.loginGoogle(googleId)
+                .observeForever(new Observer<BaseResponse<LoginData>>() {
                     @Override
-                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                        if (response.isSuccessful()) {
-                            // Guardar token, navegar a Home, etc.
+                    public void onChanged(BaseResponse<LoginData> response) {
+
+                        if (response == null) {
+                            Toast.makeText(context, "Error en la conexión con el servidor", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        Log.d("LoginGoogle", "Respuesta servidor: " + new Gson().toJson(response));
+
+                        LoginData loginData = response.getData();
+
+                        if (response.isSuccess() && loginData != null && loginData.isLogin() && loginData.getUsuario() != null) {
+
+                            Usuario usuario = loginData.getUsuario();
+                            Toast.makeText(context, "Bienvenido " + usuario.getNombreUsuario(), Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(context, HomeActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            context.startActivity(intent);
+
+                        } else {
+
+                            Toast.makeText(context, "Completa tu registro", Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(context, RegisterActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                            // INFORMAMOS EXPLÍCITAMENTE QUE ES REGISTRO GOOGLE
+                            intent.putExtra("tipoRegistro", "GOOGLE");
+                            intent.putExtra("googleId", googleId);
+                            intent.putExtra("email", email);
+
+                            context.startActivity(intent);
                         }
                     }
-
-                    @Override
-                    public void onFailure(Call<LoginResponse> call, Throwable t) {
-                        Toast.makeText(context, "Error de conexión", Toast.LENGTH_SHORT).show();
-                    }
                 });
-        */
-
-        // Por ahora solo mostramos:
-        Toast.makeText(context,
-                "Google OK\nID: " + googleId,
-                Toast.LENGTH_LONG).show();
     }
 }
