@@ -23,6 +23,7 @@ Filtro por géneros
 
 Búsqueda por título o autor
 
+
 🔹 Lector Integrado
 
 Lectura página por página
@@ -32,4 +33,7 @@ Lectura página por página
 Registro e inicio de sesión (Email / Password)
 
 Google Sign-In
+
+
+<img width="1920" height="1080" alt="Presentación Anime Manga Dibujos Japón Ilustrado Blanco y Negro" src="https://github.com/user-attachments/assets/95fdef63-e7e7-4293-8882-2a330a3372a0" />
 
