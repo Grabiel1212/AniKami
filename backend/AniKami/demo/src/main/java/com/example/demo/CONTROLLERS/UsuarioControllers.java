@@ -72,7 +72,8 @@ public class UsuarioControllers {
         // ============================================================
         @PostMapping("/registrar-email")
         public ResponseEntity<ApiResponse<?>> agregarUsuarioEmail(
-                        @RequestParam("NombreUsuario") String nombreUsuario,
+                        @RequestParam("nombreUsuario") String nombreUsuario,
+                        @RequestParam("apellido") String apellido,
                         @RequestParam("correo") String correo,
                         @RequestParam(value = "contrasena", required = false) String contrasena,
                         @RequestParam(value = "google_id", required = false) String google_id,
@@ -81,6 +82,7 @@ public class UsuarioControllers {
 
                 Usuarios usuario = Usuarios.builder()
                                 .nombreUsuario(nombreUsuario)
+                                .apellido(apellido)
                                 .correo(correo)
                                 .contrasena(contrasena)
                                 .googleId(google_id)
@@ -95,14 +97,16 @@ public class UsuarioControllers {
         // ============================================================
         @PostMapping("/registrar-google")
         public ResponseEntity<ApiResponse<?>> agregarUsuarioGoogle(
-                        @RequestParam("NombreUsuario") String nombreUsuario,
+                        @RequestParam("nombreUsuario") String nombreUsuario,
                         @RequestParam("correo") String correo,
+                        @RequestParam("apellido") String apellido,
                         @RequestParam(value = "google_id", required = false) String google_id,
                         @RequestParam(value = "foto", required = false) MultipartFile foto,
                         @RequestParam(value = "generosFavoritos", required = false) List<Integer> generosFavoritos) {
 
                 Usuarios usuario = Usuarios.builder()
                                 .nombreUsuario(nombreUsuario)
+                                .apellido(apellido)
                                 .correo(correo)
                                 .googleId(google_id)
                                 .build();
@@ -151,7 +155,7 @@ public class UsuarioControllers {
                         @RequestBody Map<String, String> request) {
 
                 String correo = request.get("correo");
-                String nuevaContra = request.get("nuevaContrasena");
+                String nuevaContra = request.get("contrasena");
 
                 return ResponseEntity.ok(
                                 usuarioServices.restablecerContrasena(correo, nuevaContra));

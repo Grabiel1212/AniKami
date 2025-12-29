@@ -6,9 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.widget.ImageView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 
 public class PermissionManager {
@@ -16,64 +15,49 @@ public class PermissionManager {
     private static final int REQUEST_GALLERY = 1001;
     private static final int REQUEST_PERMISSION = 2001;
 
-    private Activity activity;
-    private ImageView imgPreview;
+    private final Activity activity;
+    private final ImageView imgPreview;
+    private final OnImageSelectedListener listener;
 
-    public PermissionManager(Activity activity, ImageView imgPreview) {
+    public interface OnImageSelectedListener {
+        void onImageSelected(Uri imageUri);
+    }
+
+    public PermissionManager(Activity activity, ImageView imgPreview, OnImageSelectedListener listener) {
         this.activity = activity;
         this.imgPreview = imgPreview;
+        this.listener = listener;
     }
 
     public void verificarPermisos() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (activity.checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES)
-                    != PackageManager.PERMISSION_GRANTED) {
+        String permission = (Build.VERSION.SDK_INT >= 33)
+                ? Manifest.permission.READ_MEDIA_IMAGES
+                : Manifest.permission.READ_EXTERNAL_STORAGE;
 
-                activity.requestPermissions(
-                        new String[]{Manifest.permission.READ_MEDIA_IMAGES},
-                        REQUEST_PERMISSION
-                );
-            } else {
-                abrirGaleria();
-            }
+        if (activity.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+            activity.requestPermissions(new String[]{permission}, REQUEST_PERMISSION);
         } else {
-
-            if (activity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-
-                activity.requestPermissions(
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        REQUEST_PERMISSION
-                );
-            } else {
-                abrirGaleria();
-            }
+            abrirGaleria();
         }
     }
 
-    public void abrirGaleria() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
+    private void abrirGaleria() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
         activity.startActivityForResult(intent, REQUEST_GALLERY);
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_GALLERY && resultCode == Activity.RESULT_OK && data != null) {
-            Uri imageUri = data.getData();
-            imgPreview.setImageURI(imageUri);
+    public void onActivityResult(int r, int c, Intent d) {
+        if (r == REQUEST_GALLERY && c == Activity.RESULT_OK && d != null) {
+            Uri uri = d.getData();
+            imgPreview.setImageURI(uri);
+            listener.onImageSelected(uri);
         }
     }
 
-    public void onRequestPermissionsResult(int requestCode, @NonNull int[] grantResults) {
-
-        if (requestCode == REQUEST_PERMISSION) {
-
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                abrirGaleria();
-            } else {
-                Toast.makeText(activity, "Permiso denegado", Toast.LENGTH_SHORT).show();
-            }
+    public void onRequestPermissionsResult(int r, @NonNull int[] g) {
+        if (r == REQUEST_PERMISSION && g.length > 0 && g[0] == PackageManager.PERMISSION_GRANTED) {
+            abrirGaleria();
         }
     }
-
 }

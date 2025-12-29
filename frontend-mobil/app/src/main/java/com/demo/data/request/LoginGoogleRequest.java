@@ -1,17 +1,15 @@
 package com.demo.data.request;
 
+import com.google.gson.annotations.SerializedName;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class LoginGoogleRequest {
-
+    @SerializedName("google_id")
     private String idGoogle;
 }

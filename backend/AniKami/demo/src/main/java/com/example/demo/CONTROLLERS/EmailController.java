@@ -23,7 +23,7 @@ public class EmailController {
     public ResponseEntity<ApiResponse<Map<String, Object>>> enviarCodigo(
             @RequestBody Map<String, String> request) {
 
-        String email = request.get("email");
+        String email = request.get("correo");
 
         ApiResponse<Map<String, Object>> response = emailService.enviarCodigo(email);
 

@@ -2,14 +2,11 @@ package com.demo.data.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginEmailRequest {
+public class VerificacionRequest {
     private String correo;
-    private String contrasena;
 }
