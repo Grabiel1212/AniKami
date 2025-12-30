@@ -1,11 +1,16 @@
-package com.example.demo.controllers;
+package com.example.demo.CONTROLLERS;
 
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,8 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.helpers.ApiResponse;
-import com.example.demo.model.Usuarios;
-import com.example.demo.services.UsuarioServices;
+import com.example.demo.Model.Usuarios;
+import com.example.demo.SERVICES.UsuarioServices;
+import com.example.demo.ServicesImpl.UsuarioServiceImpl;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -22,6 +28,8 @@ public class UsuarioControllers {
 
         @Autowired
         private UsuarioServices usuarioServices;
+        @Autowired
+        private UsuarioServiceImpl usuarioService;
 
         // ============================================================
         // VALIDAR QUE EL CORREO NO ESTÉ REGISTRADO (REGISTRO NORMAL)
@@ -159,6 +167,31 @@ public class UsuarioControllers {
 
                 return ResponseEntity.ok(
                                 usuarioServices.restablecerContrasena(correo, nuevaContra));
+        }
+
+         @GetMapping
+        public List<Usuarios> listarUsuarios() {
+                return usuarioService.ListarUsuario();
+        }
+
+        @PostMapping
+        public ResponseEntity<Usuarios> crear(@RequestBody Usuarios usuario) {
+                Usuarios nuevo = usuarioService.guardar(usuario);
+                return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
+        }
+
+        @PutMapping("/{id}")
+        public ResponseEntity<Usuarios> actualizar(
+                        @PathVariable Integer id,
+                        @RequestBody Usuarios usuario) {
+                Usuarios actualizado = usuarioService.actualizar(id, usuario);
+                return ResponseEntity.ok(actualizado);
+        }
+
+        @DeleteMapping("/{id}")
+        public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
+                usuarioService.eliminar(id);
+                return ResponseEntity.noContent().build();
         }
 
 }

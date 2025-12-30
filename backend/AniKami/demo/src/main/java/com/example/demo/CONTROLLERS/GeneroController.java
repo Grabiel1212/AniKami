@@ -1,4 +1,4 @@
-package com.example.demo.controllers;
+package com.example.demo.CONTROLLERS;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.helpers.ApiResponse;
-import com.example.demo.model.Generos;
-import com.example.demo.services.GeneroService;
+import com.example.demo.Model.Generos;
+import com.example.demo.SERVICES.GeneroService;
 
 @RestController
 @RequestMapping("/generos")

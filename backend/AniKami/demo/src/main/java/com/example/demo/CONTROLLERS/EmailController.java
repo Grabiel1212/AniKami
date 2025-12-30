@@ -1,4 +1,4 @@
-package com.example.demo.controllers;
+package com.example.demo.CONTROLLERS;
 
 import java.util.Map;
 
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.helpers.ApiResponse;
-import com.example.demo.services.EmailServices;
+import com.example.demo.SERVICES.EmailServices;
 
 @RestController
 @RequestMapping("/correo")

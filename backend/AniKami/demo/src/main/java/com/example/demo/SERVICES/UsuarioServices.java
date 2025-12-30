@@ -1,4 +1,4 @@
-package com.example.demo.services;
+package com.example.demo.SERVICES;
 
 import java.util.List;
 import java.util.Map;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.helpers.ApiResponse;
-import com.example.demo.model.UsuarioPreferenciaGenero;
-import com.example.demo.model.Usuarios;
+import com.example.demo.Model.UsuarioPreferenciaGenero;
+import com.example.demo.Model.Usuarios;
 import com.example.demo.repository.UsuarioPreferenciaGeneroRepository;
 import com.example.demo.repository.UsuarioRepository;
 
@@ -213,6 +213,16 @@ public class UsuarioServices {
         usuarioRepository.save(usuario);
 
         return ApiResponse.success("Contraseña restablecida exitosamente.", null);
+    }
+
+     // ======================
+    // INTERFAZ SERVICIOS
+    // ======================
+    public interface UsuarioService {
+        List<Usuarios> ListarUsuario();
+        Usuarios guardar(Usuarios usuario);
+        Usuarios actualizar(Integer id,Usuarios usuario);
+        void eliminar(Integer idUsuario);
     }
 
 }
