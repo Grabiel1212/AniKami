@@ -4,11 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,10 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.helpers.ApiResponse;
 import com.example.demo.Model.Usuarios;
 import com.example.demo.SERVICES.UsuarioServices;
-import com.example.demo.ServicesImpl.UsuarioServiceImpl;
+import com.example.demo.helpers.ApiResponse;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -28,8 +24,6 @@ public class UsuarioControllers {
 
         @Autowired
         private UsuarioServices usuarioServices;
-        @Autowired
-        private UsuarioServiceImpl usuarioService;
 
         // ============================================================
         // VALIDAR QUE EL CORREO NO ESTÉ REGISTRADO (REGISTRO NORMAL)
@@ -169,29 +163,50 @@ public class UsuarioControllers {
                                 usuarioServices.restablecerContrasena(correo, nuevaContra));
         }
 
-         @GetMapping
-        public List<Usuarios> listarUsuarios() {
-                return usuarioService.ListarUsuario();
+        // ==============================
+        // ACTULIZAR
+        // ==============================
+        @PutMapping("/actualizar-perfil")
+        public ResponseEntity<ApiResponse<Usuarios>> actualizarPerfil(
+                        @RequestParam("idUsuario") Integer idUsuario,
+                        @RequestParam(value = "nombreUsuario", required = false) String nombreUsuario,
+                        @RequestParam(value = "apellido", required = false) String apellido,
+                        @RequestParam(value = "foto", required = false) MultipartFile foto) {
+
+                ApiResponse<Usuarios> response = usuarioServices.actualizarPerfil(idUsuario, nombreUsuario, apellido,
+                                foto);
+
+                return ResponseEntity.ok(response);
         }
 
-        @PostMapping
-        public ResponseEntity<Usuarios> crear(@RequestBody Usuarios usuario) {
-                Usuarios nuevo = usuarioService.guardar(usuario);
-                return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
+        // ==============================
+        // VER INFO USUARIO
+        // ==============================
+        @PostMapping("/ver")
+        public ResponseEntity<ApiResponse<Usuarios>> verUsuarioPorId(
+                        @RequestBody Map<String, Integer> body) {
+
+                Integer idUsuario = body.get("idUsuario");
+
+                if (idUsuario == null) {
+                        return ResponseEntity.badRequest()
+                                        .body(ApiResponse.error("El idUsuario es obligatorio"));
+                }
+
+                ApiResponse<Usuarios> response = usuarioServices.obtenerUsuarioPorId(idUsuario);
+
+                return ResponseEntity.ok(response);
+
         }
 
-        @PutMapping("/{id}")
-        public ResponseEntity<Usuarios> actualizar(
-                        @PathVariable Integer id,
-                        @RequestBody Usuarios usuario) {
-                Usuarios actualizado = usuarioService.actualizar(id, usuario);
-                return ResponseEntity.ok(actualizado);
-        }
+        /// listar usuario
 
-        @DeleteMapping("/{id}")
-        public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
-                usuarioService.eliminar(id);
-                return ResponseEntity.noContent().build();
+        @GetMapping("/listar")
+        public ResponseEntity<ApiResponse<List<Usuarios>>> listarUsuarios() {
+
+                ApiResponse<List<Usuarios>> response = usuarioServices.listarUsuarios();
+
+                return ResponseEntity.ok(response);
         }
 
 }

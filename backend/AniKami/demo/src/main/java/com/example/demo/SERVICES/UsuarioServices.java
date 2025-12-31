@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.helpers.ApiResponse;
 import com.example.demo.Model.UsuarioPreferenciaGenero;
 import com.example.demo.Model.Usuarios;
+import com.example.demo.helpers.ApiResponse;
 import com.example.demo.repository.UsuarioPreferenciaGeneroRepository;
 import com.example.demo.repository.UsuarioRepository;
 
@@ -215,14 +215,77 @@ public class UsuarioServices {
         return ApiResponse.success("Contraseña restablecida exitosamente.", null);
     }
 
-     // ======================
-    // INTERFAZ SERVICIOS
-    // ======================
-    public interface UsuarioService {
-        List<Usuarios> ListarUsuario();
-        Usuarios guardar(Usuarios usuario);
-        Usuarios actualizar(Integer id,Usuarios usuario);
-        void eliminar(Integer idUsuario);
+    // ==============================
+    // ACTULIZAR DATOS DEL USUAURIO
+    // ==============================
+
+    public ApiResponse<Usuarios> actualizarPerfil(Integer idUsuario, String nombreUsuario, String apellido,
+            MultipartFile nuevaFoto) {
+
+        try {
+            // 1️⃣ Buscar usuario
+            Usuarios usuario = usuarioRepository.findById(idUsuario).orElse(null);
+
+            if (usuario == null) {
+                return ApiResponse.error("Usuario no encontrado", null);
+            }
+
+            // 2️⃣ Actualizar SOLO nombre y apellido
+            if (nombreUsuario != null && !nombreUsuario.isBlank()) {
+                usuario.setNombreUsuario(nombreUsuario);
+            }
+
+            if (apellido != null && !apellido.isBlank()) {
+                usuario.setApellido(apellido);
+            }
+
+            // 3️⃣ Manejo de foto
+            if (nuevaFoto != null && !nuevaFoto.isEmpty()) {
+
+                // 🔥 Eliminar foto anterior si existe
+                if (usuario.getFoto() != null && !usuario.getFoto().isBlank()) {
+                    cloudinaryServices.eliminarImagen(usuario.getFoto());
+                }
+
+                // ⬆️ Subir nueva foto
+                Map<String, Object> resultado = cloudinaryServices.subirImagen(nuevaFoto);
+
+                if (!Boolean.TRUE.equals(resultado.get("success"))) {
+                    return ApiResponse.error("Error al subir la nueva foto", null);
+                }
+
+                usuario.setFoto((String) resultado.get("url"));
+            }
+
+            // 4️⃣ Guardar cambios
+            Usuarios actualizado = usuarioRepository.save(usuario);
+
+            return ApiResponse.success("Perfil actualizado correctamente", actualizado);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ApiResponse.error("Error al actualizar perfil: " + e.getMessage(), null);
+        }
+    }
+
+    // para buscar usuario por id
+    public ApiResponse<Usuarios> obtenerUsuarioPorId(Integer idUsuario) {
+
+        Usuarios usuario = usuarioRepository.findById(idUsuario).orElse(null);
+
+        if (usuario == null) {
+            return ApiResponse.error("Usuario no encontrado", null);
+        }
+
+        return ApiResponse.success("Usuario encontrado", usuario);
+
+    }
+
+    // para listar usuarios
+
+    public ApiResponse<List<Usuarios>> listarUsuarios() {
+        List<Usuarios> usuarios = usuarioRepository.findAll();
+        return ApiResponse.success("Lista de Usuarios", usuarios);
     }
 
 }

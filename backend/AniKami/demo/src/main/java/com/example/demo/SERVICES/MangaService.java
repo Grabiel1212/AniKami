@@ -1,19 +1,32 @@
 package com.example.demo.SERVICES;
 
-import com.example.demo.Model.Mangas;
 import java.util.List;
 
-public interface MangaService {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-    Mangas crear(Mangas manga);
+import com.example.demo.Model.Mangas;
+import com.example.demo.helpers.ApiResponse;
+import com.example.demo.repository.MangaRepository;
 
-    List<Mangas> listar();
+@Service
+public class MangaService {
 
-    Mangas buscarPorId(Integer id);
+    @Autowired
+    MangaRepository repository;
 
-    Mangas actualizar(Integer id, Mangas nuevo);
+    public ApiResponse<List<Mangas>> listarMangas() {
 
-    void eliminar(Integer id);
+        List<Mangas> manga = repository.findAll();
 
-    Mangas cambiarEstado(Integer id, String estado);
+        return ApiResponse.success("Lista de Mangas", manga);
+    }
+
+    public ApiResponse<List<Mangas>> listarMangasPopulares() {
+
+        List<Mangas> mangas = repository.findMangasPopularesAleatorios();
+
+        return ApiResponse.success("Mangas populares", mangas);
+    }
+
 }

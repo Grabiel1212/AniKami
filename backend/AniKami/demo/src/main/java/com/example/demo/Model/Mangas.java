@@ -14,7 +14,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Entity
 @Table(name = "mangas")
 @Getter
@@ -24,9 +23,9 @@ import lombok.Setter;
 @Builder
 public class Mangas {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     int id;
     @Column(name = "titulo")
     String titulo;

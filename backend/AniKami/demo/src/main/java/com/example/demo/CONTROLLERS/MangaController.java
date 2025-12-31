@@ -2,18 +2,15 @@ package com.example.demo.CONTROLLERS;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Model.Mangas;
 import com.example.demo.SERVICES.MangaService;
+import com.example.demo.helpers.ApiResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,32 +18,26 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/mangas")
 @RequiredArgsConstructor
 public class MangaController {
-    
 
-    private final MangaService mangaService;
+    @Autowired
+    private MangaService mangaService;
 
-    @PostMapping
-    public Mangas crear(@RequestBody Mangas manga){
-        return mangaService.crear(manga);
+    // 📚 LISTAR TODOS LOS MANGAS
+    @GetMapping("/listar")
+    public ResponseEntity<ApiResponse<List<Mangas>>> listarMangas() {
+
+        ApiResponse<List<Mangas>> response = mangaService.listarMangas();
+
+        return ResponseEntity.ok(response);
     }
 
-    @GetMapping
-    public List<Mangas> listar(){
-        return mangaService.listar();
+    // 🔥 LISTAR 6 MANGAS POPULARES ALEATORIOS
+    @GetMapping("/populares")
+    public ResponseEntity<ApiResponse<List<Mangas>>> listarMangasPopulares() {
+
+        ApiResponse<List<Mangas>> response = mangaService.listarMangasPopulares();
+
+        return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}")
-    public Mangas actualizar(@PathVariable Integer id, @RequestBody Mangas manga){
-        return mangaService.actualizar(id, manga);
-    }
-
-    @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Integer id){
-        mangaService.eliminar(id);
-    }
-
-    @PutMapping("/{id}/estado")
-    public Mangas cambiarEstado(@PathVariable Integer id, @RequestParam String estado){
-        return mangaService.cambiarEstado(id, estado.toUpperCase());
-    }
 }
