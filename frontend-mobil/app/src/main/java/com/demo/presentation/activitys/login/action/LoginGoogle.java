@@ -12,6 +12,7 @@ import com.demo.data.model.LoginData;
 import com.demo.data.model.Usuario;
 import com.demo.data.repocitory.UsuarioRepository;
 import com.demo.data.request.VerificacionRequest;
+import com.demo.data.session.SessionManager;
 import com.demo.presentation.activitys.home.HomeActivity;
 import com.demo.presentation.activitys.register.RegisterActivity;
 import com.google.gson.Gson;
@@ -97,6 +98,10 @@ public class LoginGoogle {
 
                                     Usuario usuario = loginData.getUsuario();
 
+// ✅ GUARDAR ID DE USUARIO
+                                    SessionManager session = new SessionManager(context);
+                                    session.saveUserId(usuario.getIdUsuario());
+
                                     Toast.makeText(
                                             context,
                                             "Bienvenido " + usuario.getNombreUsuario(),
@@ -109,6 +114,7 @@ public class LoginGoogle {
                                                     Intent.FLAG_ACTIVITY_CLEAR_TASK
                                     );
                                     context.startActivity(intent);
+
 
                                 } else {
                                     // ❌ Correo existe pero es EMAIL/PASSWORD

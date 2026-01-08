@@ -7,6 +7,7 @@ import com.demo.data.model.Usuario;
 import com.demo.data.request.LoginEmailRequest;
 import com.demo.data.request.LoginGoogleRequest;
 import com.demo.data.request.UsuarioRequest;
+import com.demo.data.request.UsuarioRequestInfo;
 import com.demo.data.request.VerificacionRequest;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 
 public interface UsuarioApi {
@@ -71,6 +73,20 @@ public interface UsuarioApi {
             @Part("generosFavoritos") RequestBody generosFavoritos,
             @Part MultipartBody.Part foto
     );
+
+
+    @POST("usuarios/ver")
+    Call<BaseResponse<Usuario>> verInfoUsuario(@Body UsuarioRequestInfo request);
+
+    @Multipart
+    @PUT("usuarios/actualizar-perfil")
+    Call<BaseResponse<Usuario>> editarUsuario(
+            @Part("idUsuario") RequestBody idUsuario,
+            @Part("nombreUsuario") RequestBody nombreUsuario,
+            @Part("apellido") RequestBody apellido,
+            @Part MultipartBody.Part foto // puede ser null
+    );
+
 
 
 

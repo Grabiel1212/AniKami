@@ -36,6 +36,6 @@ public class Mangas {
     @Column(name = "portada_url")
     String portada_url;
     @Column(name = "creado_en")
-    Date creado_en;
+    private Date creadoEn;
 
 }

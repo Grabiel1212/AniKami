@@ -4,22 +4,39 @@
 
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
-        android:usesCleartextTraffic="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Frontendankami">
+        android:theme="@style/Theme.Frontendankami"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".presentation.activitys.manga.visor.ReaderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.activitys.manga.MangaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.activitys.profile.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.activitys.favorites.FavoritesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.activitys.search.SearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.activitys.categories.CategoriesActivity"
+            android:exported="false" />
         <activity
             android:name=".presentation.activitys.home.HomeActivity"
             android:exported="false" />
-
         <activity
             android:name=".presentation.activitys.recovery.RecoveryActivity"
             android:exported="false" />

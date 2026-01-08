@@ -8,6 +8,7 @@ import com.demo.data.api.UsuarioApi;
 import com.demo.data.common.BaseResponse;
 import com.demo.data.helpers.LiveDataCallAdapter;
 import com.demo.data.model.Genero;
+import com.demo.data.request.UsuarioRequest;
 
 import java.util.List;
 
@@ -26,6 +27,15 @@ public class GeneroRepository {
     public LiveData<BaseResponse<List<Genero>>> listarGeneros() {
         return LiveDataCallAdapter.call(
                 generoApi.listarGeneros()
+        );
+    }
+
+    /* ========================= PREFERENCIAS DE USUARIO ========================= */
+
+    public LiveData<BaseResponse<List<Genero>>> obtenerGenerosPreferidos(int idUsuario) {
+        UsuarioRequest request = new UsuarioRequest(idUsuario);
+        return LiveDataCallAdapter.call(
+                generoApi.PreferenciaGeneros(request)
         );
     }
 

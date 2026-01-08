@@ -11,6 +11,7 @@ import com.demo.data.common.BaseResponse;
 import com.demo.data.model.Usuario;
 
 import com.demo.data.repocitory.UsuarioRepository;
+import com.demo.data.session.SessionManager;
 import com.demo.presentation.activitys.home.HomeActivity;
 
 public class LoginEmail {
@@ -36,10 +37,18 @@ public class LoginEmail {
                     @Override
                     public void onChanged(BaseResponse<Usuario> response) {
                         if (response.isSuccess() && response.getData() != null) {
+
+                            Usuario usuario = response.getData();
+
+                            // ✅ GUARDAR ID DE USUARIO
+                            SessionManager session = new SessionManager(activity);
+                            session.saveUserId(usuario.getIdUsuario());
+
                             Intent intent = new Intent(activity, HomeActivity.class);
                             activity.startActivity(intent);
                             activity.finish();
-                        } else {
+                        }
+                        else {
                             Toast.makeText(activity, "Error: " + response.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }

@@ -27,4 +27,5 @@ public class Generos {
     private String nombre;
     @Column(name = "descripcion")
     private String descripcion;
+
 }

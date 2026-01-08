@@ -12,6 +12,7 @@ import com.demo.data.model.Usuario;
 import com.demo.data.request.LoginEmailRequest;
 import com.demo.data.request.LoginGoogleRequest;
 import com.demo.data.request.UsuarioRequest;
+import com.demo.data.request.UsuarioRequestInfo;
 import com.demo.data.request.VerificacionRequest;
 
 import okhttp3.MultipartBody;
@@ -112,8 +113,33 @@ public class UsuarioRepository {
         );
     }
 
+    /* ========================= VER INFO USUARIO ========================= */
 
+    public LiveData<BaseResponse<Usuario>> verInfoUsuario(int idUsuario) {
+        UsuarioRequestInfo request = new UsuarioRequestInfo(idUsuario);
+        return LiveDataCallAdapter.call(usuarioApi.verInfoUsuario(request));
+    }
 
+    /* ========================= EDITAR PERFIL ========================= */
 
-
+    public LiveData<BaseResponse<Usuario>> editarUsuario(
+            RequestBody idUsuario,
+            RequestBody nombreUsuario,
+            RequestBody apellido,
+            MultipartBody.Part foto // puede ser null
+    ) {
+        return LiveDataCallAdapter.call(
+                usuarioApi.editarUsuario(
+                        idUsuario,
+                        nombreUsuario,
+                        apellido,
+                        foto
+                )
+        );
+    }
 }
+
+
+
+
+

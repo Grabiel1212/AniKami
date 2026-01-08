@@ -16,12 +16,15 @@ import lombok.Data;
 public class Capitulos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     int id;
     @Column(name = "manga_id")
     int manga_id;
     @Column(name = "numero")
     int numero;
     @Column(name = "titulo")
+    String titulo;
+    @Column(name = "imagen_url")
     String imagen_url;
     @Column(name = "publicado_en")
     Date publicado_en;

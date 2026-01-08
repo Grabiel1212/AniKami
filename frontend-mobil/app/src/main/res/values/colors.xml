@@ -3,4 +3,14 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="purple">#5A00FF</color>
+    <color name="background_dark">#121212</color>
+    <color name="nav_active">#FFFFFF</color>      <!-- blanco -->
+    <color name="nav_inactive">#888888</color>    <!-- gris -->
+    <color name="card_dark">#1E1E1E</color>
+    <color name="chip_selected">#FFBB33</color>
+    <color name="green">#4CAF50</color>
+    <color name="gray_medium">#9E9E9E</color>
+
+
+
 </resources>

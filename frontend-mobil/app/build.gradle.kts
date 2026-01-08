@@ -53,6 +53,8 @@ dependencies {
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok.annotationProcessor)
 
+    implementation(libs.glide)
+    annotationProcessor(libs.glide.compiler)
 
 
     testImplementation(libs.junit)

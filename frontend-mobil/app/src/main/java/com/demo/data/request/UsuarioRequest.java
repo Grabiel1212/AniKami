@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UsuarioRequest {
 
+    private int usuarioId;
     private String nombreUsuario;
     private String apellido;
     private String correo;
@@ -34,6 +35,10 @@ public class UsuarioRequest {
     public UsuarioRequest (String correo , String contrasena){
         this.correo = correo;
         this.contrasena = contrasena;
+    }
+
+    public UsuarioRequest (int usuarioId ){
+        this.usuarioId = usuarioId;
     }
 
 }
