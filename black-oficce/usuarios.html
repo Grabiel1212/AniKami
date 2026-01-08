@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Back Office - Usuarios</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 30px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* ===== HEADER ===== */
+.header {
+    background: white;
+    padding: 25px 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    color: #333;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header h1 i {
+    color: #667eea;
+    font-size: 32px;
+}
+
+/* ===== TABLE ===== */
+.table-container {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+th {
+    padding: 20px 15px;
+    color: white;
+    font-weight: 600;
+    text-align: left;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+th:first-child {
+    border-top-left-radius: 15px;
+}
+
+th:last-child {
+    border-top-right-radius: 15px;
+}
+
+td {
+    padding: 20px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #555;
+    font-size: 15px;
+}
+
+tr:hover {
+    background-color: #f8f9ff;
+    transition: background-color 0.3s ease;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* ===== USER AVATAR ===== */
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #e0e7ff;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+/* ===== ACTION ICONS ===== */
+.action-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: 18px;
+}
+
+.icon-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.view-btn {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.edit-btn {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+/* ===== MODAL ===== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: white;
+    width: 450px;
+    margin: 10% auto;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 25px;
+    color: white;
+}
+
+.modal-header h3 {
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.close-btn {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    float: right;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255,255,255,0.3);
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+/* ===== FORM STYLES ===== */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.file-input {
+    padding: 12px;
+    background: #f8f9ff;
+    border: 2px dashed #c5cae9;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.file-input:hover {
+    border-color: #667eea;
+    background: #f0f3ff;
+}
+
+.btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn:active {
+    transform: translateY(-1px);
+}
+
+/* ===== USER DETAILS ===== */
+.user-detail {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.user-detail img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #e0e7ff;
+}
+
+.user-info h4 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.user-info p {
+    color: #666;
+    font-size: 14px;
+}
+
+.detail-item {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.detail-value {
+    color: #333;
+    font-size: 16px;
+}
+
+/* ===== LOADING STATE ===== */
+.loading {
+    text-align: center;
+    padding: 50px;
+    color: #666;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1200px) {
+    .container {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    .header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        padding: 20px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+    }
+    
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    th, td {
+        padding: 15px 10px;
+    }
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+}
+
+.empty-state i {
+    font-size: 60px;
+    margin-bottom: 20px;
+    color: #ddd;
+}
+
+.empty-state h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #888;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+    <!-- HEADER -->
+    <div class="header">
+        <h1>
+            <i>👥</i>
+            Gestión de Usuarios
+        </h1>
+        <div class="header-info">
+            <div class="user-count">
+                Total: <span id="userCount">0</span> usuarios
+            </div>
+        </div>
+    </div>
+
+    <!-- TABLE CONTAINER -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Correo</th>
+                    <th>Foto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablaUsuarios">
+                <!-- Los usuarios se cargarán aquí -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ===== MODAL VER DETALLES ===== -->
+<div class="modal" id="modalVer">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close-btn" onclick="cerrarModal('modalVer')">×</button>
+            <h3>👁️ Detalles del Usuario</h3>
+        </div>
+        <div class="modal-body">
+            <div class="user-detail">
+                <img id="vFoto" alt="Foto de perfil">
+                <div class="user-info">
+                    <h4 id="vNombreCompleto"></h4>
+                    <p id="vCorreo"></p>
+                </div>
+            </div>
+            
+            <div class="detail-item">
+                <span class="detail-label">ID</span>
+                <span class="detail-value" id="vId"></span>
+            </div>
+            
+            <div class="detail-item">
+                <span class="detail-label">Nombre</span>
+                <span class="detail-value" id="vNombre"></span>
+            </div>
+            
+            <div class="detail-item">
+                <span class="detail-label">Apellido</span>
+                <span class="detail-value" id="vApellido"></span>
+            </div>
+            
+            <div class="detail-item">
+                <span class="detail-label">Correo electrónico</span>
+                <span class="detail-value" id="vCorreoDetail"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MODAL EDITAR ===== -->
+<div class="modal" id="modalEditar">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close-btn" onclick="cerrarModal('modalEditar')">×</button>
+            <h3>✏️ Editar Usuario</h3>
+        </div>
+        <div class="modal-body">
+            <form id="editForm">
+                <input type="hidden" id="eId">
+                
+                <div class="form-group">
+                    <label for="eNombre">Nombre</label>
+                    <input type="text" id="eNombre" class="form-control" placeholder="Ingresa el nombre">
+                </div>
+                
+                <div class="form-group">
+                    <label for="eApellido">Apellido</label>
+                    <input type="text" id="eApellido" class="form-control" placeholder="Ingresa el apellido">
+                </div>
+                
+                <div class="form-group">
+                    <label for="eFoto">Foto de perfil</label>
+                    <input type="file" id="eFoto" class="form-control file-input" accept="image/*">
+                    <small style="color: #666; font-size: 13px; margin-top: 5px; display: block;">
+                        Selecciona una nueva imagen si deseas cambiar la foto
+                    </small>
+                </div>
+                
+                <button type="button" class="btn" onclick="guardarCambios()">
+                    💾 Guardar Cambios
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Variables globales
+let usuarios = [];
+
+// LISTAR USUARIOS
+fetch("http://localhost:8081/anikami/usuarios/listar")
+.then(r => r.json())
+.then(res => {
+    if(res.success){
+        usuarios = res.data;
+        const tbody = document.getElementById("tablaUsuarios");
+        
+        if (usuarios.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <i>👥</i>
+                            <h3>No hay usuarios registrados</h3>
+                            <p>Agrega tu primer usuario para comenzar</p>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        } else {
+            tbody.innerHTML = '';
+            usuarios.forEach(u => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${u.idUsuario}</td>
+                    <td>${u.nombreUsuario}</td>
+                    <td>${u.apellido || '-'}</td>
+                    <td>${u.correo}</td>
+                    <td>
+                        <img class="user-avatar" 
+                             src="${u.foto || 'https://via.placeholder.com/50/667eea/ffffff?text=U'}" 
+                             alt="${u.nombreUsuario}">
+                    </td>
+                    <td>
+                        <div class="action-icons">
+                            <button class="icon-btn view-btn" onclick="verUsuario(${u.idUsuario})" title="Ver detalles">
+                                👁️
+                            </button>
+                            <button class="icon-btn edit-btn" onclick="editarUsuario(${u.idUsuario})" title="Editar usuario">
+                                ✏️
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Actualizar contador
+        document.getElementById('userCount').textContent = usuarios.length;
+    } else {
+        document.getElementById("tablaUsuarios").innerHTML = `
+            <tr>
+                <td colspan="6">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Error al cargar los usuarios</p>
+                        <button onclick="location.reload()" style="margin-top: 15px; padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                            🔄 Reintentar
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }
+})
+.catch(error => {
+    console.error('Error:', error);
+    document.getElementById("tablaUsuarios").innerHTML = `
+        <tr>
+            <td colspan="6">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Error de conexión con el servidor</p>
+                    <p style="font-size: 14px; color: #999; margin-top: 5px;">Verifica que el servidor esté funcionando</p>
+                </div>
+            </td>
+        </tr>
+    `;
+});
+
+// VER USUARIO
+function verUsuario(id){
+    fetch("http://localhost:8081/anikami/usuarios/ver",{
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idUsuario: id })
+    })
+    .then(r => r.json())
+    .then(res => {
+        if(res.success){
+            const u = res.data;
+            
+            // Actualizar datos en el modal
+            document.getElementById('vId').textContent = u.idUsuario;
+            document.getElementById('vNombre').textContent = u.nombreUsuario;
+            document.getElementById('vApellido').textContent = u.apellido || 'No especificado';
+            document.getElementById('vCorreo').textContent = u.correo;
+            document.getElementById('vCorreoDetail').textContent = u.correo;
+            document.getElementById('vNombreCompleto').textContent = `${u.nombreUsuario} ${u.apellido || ''}`;
+            
+            // Foto
+            const fotoElement = document.getElementById('vFoto');
+            if (u.foto) {
+                fotoElement.src = u.foto;
+                fotoElement.alt = `${u.nombreUsuario} ${u.apellido || ''}`;
+            } else {
+                fotoElement.src = 'https://via.placeholder.com/80/667eea/ffffff?text=U';
+            }
+            
+            abrirModal('modalVer');
+        } else {
+            alert('No se pudo cargar la información del usuario');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al cargar la información del usuario');
+    });
+}
+
+// EDITAR USUARIO
+function editarUsuario(id){
+    fetch("http://localhost:8081/anikami/usuarios/ver",{
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idUsuario: id })
+    })
+    .then(r => r.json())
+    .then(res => {
+        if(res.success){
+            const u = res.data;
+            
+            // Rellenar formulario
+            document.getElementById('eId').value = u.idUsuario;
+            document.getElementById('eNombre').value = u.nombreUsuario;
+            document.getElementById('eApellido').value = u.apellido || '';
+            
+            abrirModal('modalEditar');
+        } else {
+            alert('No se pudo cargar la información del usuario');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al cargar la información del usuario');
+    });
+}
+
+// GUARDAR CAMBIOS
+function guardarCambios(){
+    const formData = new FormData();
+    formData.append("idUsuario", document.getElementById('eId').value);
+    formData.append("nombreUsuario", document.getElementById('eNombre').value);
+    formData.append("apellido", document.getElementById('eApellido').value);
+    
+    const fotoFile = document.getElementById('eFoto').files[0];
+    if(fotoFile){
+        formData.append("foto", fotoFile);
+    }
+
+    // Mostrar loader en el botón
+    const btn = document.querySelector('#modalEditar .btn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '⏳ Guardando...';
+    btn.disabled = true;
+
+    fetch("http://localhost:8081/anikami/usuarios/actualizar-perfil",{
+        method: "PUT",
+        body: formData
+    })
+    .then(r => r.json())
+    .then(res => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        
+        if(res.success){
+            // Mostrar mensaje de éxito
+            alert("✅ Usuario actualizado correctamente");
+            
+            // Cerrar modal
+            cerrarModal('modalEditar');
+            
+            // Recargar después de 1 segundo
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        } else {
+            alert("❌ Error al actualizar el usuario: " + (res.message || 'Error desconocido'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        alert("❌ Error de conexión al guardar cambios");
+    });
+}
+
+// FUNCIONES MODAL
+function abrirModal(id){ 
+    document.getElementById(id).style.display = "block";
+    document.body.style.overflow = 'hidden'; // Prevenir scroll
+}
+
+function cerrarModal(id){ 
+    document.getElementById(id).style.display = "none";
+    document.body.style.overflow = 'auto'; // Restaurar scroll
+}
+
+// Cerrar modal al hacer clic fuera
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = "none";
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// Manejar tecla ESC para cerrar modales
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            if (modal.style.display === 'block') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    }
+});
+</script>
+
+</body>
+</html>

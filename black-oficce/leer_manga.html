@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leer Manga - Anikami</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --bs-primary: #6f42c1;
+        }
+        .chapter-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            background: rgba(33, 37, 41, 0.95) !important;
+        }
+        .chapter-card {
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            cursor: pointer;
+            height: 100%;
+        }
+        .chapter-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--bs-primary);
+            box-shadow: 0 10px 20px rgba(111, 66, 193, 0.2);
+        }
+        .chapter-thumbnail {
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px 8px 0 0;
+        }
+        .range-badge {
+            transition: all 0.3s;
+        }
+        .range-badge.active {
+            background: var(--bs-primary) !important;
+            transform: scale(1.05);
+        }
+        .reading-progress {
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            flex: 1;
+            max-width: 200px;
+        }
+        .reading-progress-bar {
+            background: var(--bs-primary);
+            transition: width 0.3s;
+        }
+        .manga-cover-large {
+            width: 100%;
+            max-width: 200px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .chapter-number {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--bs-primary);
+        }
+        .empty-state {
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Chapter Navigation -->
+    <nav class="navbar navbar-dark chapter-nav py-2">
+        <div class="container">
+            <div class="d-flex align-items-center w-100 flex-wrap gap-2">
+                <a href="mangas.html" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+                <div class="flex-grow-1 ms-2" style="min-width: 200px;">
+                    <h6 class="mb-0 text-truncate" id="mangaTitle">Cargando...</h6>
+                    <small class="text-muted" id="chapterInfo">Selecciona un capítulo</small>
+                </div>
+                
+                <div class="d-flex align-items-center ms-auto">
+                    <div class="reading-progress mx-3 d-none d-md-block">
+                        <div class="reading-progress-bar" id="globalProgress" style="width: 0%"></div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-outline-light btn-sm" id="prevRangeBtn" disabled>
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button class="btn btn-outline-light btn-sm" id="nextRangeBtn" disabled>
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <!-- Manga Header -->
+        <div class="row mb-4">
+            <div class="col-md-3 text-center">
+                <img id="mangaCover" class="manga-cover-large mb-3" alt="Portada" 
+                     onerror="this.src='https://via.placeholder.com/200x300'">
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary" onclick="scrollToChapters()">
+                        <i class="bi bi-list-ol me-2"></i>Ver Capítulos
+                    </button>
+                    <button class="btn btn-outline-secondary" onclick="toggleBookmark()">
+                        <i class="bi bi-bookmark me-2"></i>
+                        <span id="bookmarkText">Marcar</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <h1 id="mangaTitleHeader" class="display-6 mb-3"></h1>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    <span class="badge bg-primary fs-6" id="mangaStatus">Cargando...</span>
+                    <span class="badge bg-secondary fs-6">
+                        <i class="bi bi-bookmark-check me-1"></i>
+                        <span id="totalChapters">0</span> capítulos
+                    </span>
+                </div>
+                <p class="lead" id="mangaDescription">Cargando descripción...</p>
+                
+                <!-- Range Navigation -->
+                <div class="card bg-dark mb-4">
+                    <div class="card-body">
+                        <h6 class="card-title mb-3">
+                            <i class="bi bi-collection me-2"></i>Navegación Rápida
+                        </h6>
+                        <div class="d-flex flex-wrap gap-2" id="rangeButtons">
+                            <!-- Los botones de rango se generarán aquí -->
+                        </div>
+                        <div class="mt-3">
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="jumpToChapter" 
+                                       placeholder="Número de capítulo" min="1">
+                                <button class="btn btn-primary" onclick="jumpToSpecificChapter()">
+                                    <i class="bi bi-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapters Grid -->
+        <div class="card bg-dark">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-book me-2"></i>Capítulos Disponibles
+                    <span class="badge bg-primary ms-2" id="currentRange">1-10</span>
+                </h5>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="showOnlyUnread" onchange="filterChapters()">
+                    <label class="form-check-label" for="showOnlyUnread">Solo no leídos</label>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="chaptersLoading" class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <p class="mt-2">Cargando capítulos...</p>
+                </div>
+                <div class="row g-3" id="chaptersGrid" style="display: none;">
+                    <!-- Los capítulos se cargarán aquí -->
+                </div>
+                <div id="noChaptersMessage" class="empty-state" style="display: none;">
+                    <i class="bi bi-book display-1 text-muted mb-3"></i>
+                    <h4>No hay capítulos disponibles</h4>
+                    <p class="text-muted">Este manga aún no tiene capítulos publicados</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="text-center mt-4">
+            <div class="btn-group">
+                <button class="btn btn-outline-light" onclick="scrollToTop()">
+                    <i class="bi bi-arrow-up me-2"></i>Volver Arriba
+                </button>
+                <button class="btn btn-outline-light" onclick="loadFirstChapter()">
+                    <i class="bi bi-skip-backward me-2"></i>Primer Capítulo
+                </button>
+                <button class="btn btn-outline-light" onclick="loadLatestChapter()">
+                    <i class="bi bi-skip-forward me-2"></i>Último Capítulo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ===== OBTENER PARAMETROS =====
+        const params = new URLSearchParams(window.location.search);
+        const mangaId = parseInt(params.get("mangaId"));
+        const totalChapters = parseInt(params.get("total")) || 0;
+        const mangaTitle = decodeURIComponent(params.get("titulo") || "Manga");
+
+        if (!mangaId) {
+            alert("No se recibió el ID del manga");
+            window.location.href = "mangas.html";
+            throw new Error("Manga ID missing");
+        }
+
+        // Estado de la aplicación
+        let currentRange = { start: 1, end: 10 };
+        let chaptersCache = {};
+        let currentChapters = [];
+        let readChapters = new Set(JSON.parse(localStorage.getItem(`read_${mangaId}`)) || []);
+        let mangaInfo = {};
+        let rangeButtons = [];
+
+        // ===== INICIALIZACIÓN =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Actualizar UI con datos básicos
+            updateBasicUI();
+            
+            // Cargar información del manga
+            loadMangaInfo();
+            
+            // Crear botones de rango
+            createRangeButtons();
+            
+            // Cargar el primer rango automáticamente
+            setTimeout(() => {
+                if (rangeButtons.length > 0) {
+                    loadChapterRange(currentRange.start, currentRange.end);
+                }
+            }, 500);
+            
+            // Configurar botones de navegación
+            setupNavigationButtons();
+            
+            // Configurar listeners
+            setupEventListeners();
+        });
+
+        // ===== FUNCIONES PRINCIPALES =====
+        function updateBasicUI() {
+            document.getElementById('mangaTitle').textContent = mangaTitle;
+            document.getElementById('mangaTitleHeader').textContent = mangaTitle;
+            document.getElementById('totalChapters').textContent = totalChapters;
+            document.getElementById('globalProgress').style.width = 
+                totalChapters > 0 ? `${(readChapters.size / totalChapters * 100).toFixed(0)}%` : '0%';
+        }
+
+        function loadMangaInfo() {
+            fetch("http://localhost:8081/anikami/mangas/detalle", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ mangaId: mangaId })
+            })
+            .then(handleResponse)
+            .then(res => {
+                if(res.success) {
+                    mangaInfo = res.data;
+                    updateMangaInfoUI();
+                }
+            })
+            .catch(error => {
+                console.error('Error cargando info del manga:', error);
+                // Continuar sin la información detallada
+            });
+        }
+
+        function updateMangaInfoUI() {
+            if (mangaInfo.descripcion) {
+                document.getElementById('mangaDescription').textContent = mangaInfo.descripcion;
+            }
+            if (mangaInfo.estado) {
+                document.getElementById('mangaStatus').textContent = mangaInfo.estado;
+            }
+            if (mangaInfo.portada_url || mangaInfo.portadaUrl) {
+                document.getElementById('mangaCover').src = mangaInfo.portada_url || mangaInfo.portadaUrl;
+            }
+        }
+
+        function createRangeButtons() {
+            const container = document.getElementById('rangeButtons');
+            container.innerHTML = '';
+            rangeButtons = [];
+            
+            if (totalChapters === 0) {
+                container.innerHTML = '<p class="text-muted mb-0">No hay capítulos</p>';
+                return;
+            }
+            
+            for (let i = 1; i <= totalChapters; i += 10) {
+                const start = i;
+                const end = Math.min(i + 9, totalChapters);
+                const rangeKey = `${start}-${end}`;
+                
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'btn btn-outline-light range-badge';
+                button.textContent = rangeKey;
+                button.dataset.start = start;
+                button.dataset.end = end;
+                
+                button.onclick = () => loadChapterRange(start, end, button);
+                
+                container.appendChild(button);
+                rangeButtons.push(button);
+            }
+            
+            // Habilitar/deshabilitar botones de navegación
+            updateNavButtons();
+        }
+
+        function loadChapterRange(start, end, button = null) {
+            // Si no hay capítulos, mostrar mensaje
+            if (totalChapters === 0) {
+                showNoChapters();
+                return;
+            }
+            
+            // Actualizar botón activo
+            if (button) {
+                document.querySelectorAll('.range-badge').forEach(btn => {
+                    btn.classList.remove('active', 'btn-primary');
+                    btn.classList.add('btn-outline-light');
+                });
+                button.classList.add('active', 'btn-primary');
+                button.classList.remove('btn-outline-light');
+            }
+            
+            // Actualizar rango actual
+            currentRange = { start, end };
+            document.getElementById('currentRange').textContent = `${start}-${end}`;
+            
+            // Mostrar loading
+            showLoading(true);
+            
+            // Verificar caché primero
+            const cacheKey = `${start}-${end}`;
+            if (chaptersCache[cacheKey]) {
+                displayChapters(chaptersCache[cacheKey]);
+                showLoading(false);
+                return;
+            }
+            
+            // Intentar cargar desde el endpoint principal
+            fetchChaptersFromAPI(start, end)
+                .then(chapters => {
+                    if (chapters && chapters.length > 0) {
+                        chaptersCache[cacheKey] = chapters;
+                        currentChapters = chapters;
+                        displayChapters(chapters);
+                    } else {
+                        // Si no hay respuesta, generar capítulos ficticios para demostración
+                        generateDemoChapters(start, end);
+                    }
+                    showLoading(false);
+                })
+                .catch(error => {
+                    console.error('Error cargando capítulos:', error);
+                    // Generar capítulos de demostración en caso de error
+                    generateDemoChapters(start, end);
+                    showLoading(false);
+                });
+        }
+
+        async function fetchChaptersFromAPI(start, end) {
+            try {
+                // Intento 1: Endpoint por rango
+                const response = await fetch("http://localhost:8081/anikami/mangas/capitulos/por-rango", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        mangaId: mangaId,
+                        inicio: start,
+                        fin: end
+                    })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success && result.data) {
+                        return result.data;
+                    }
+                }
+                
+                // Intento 2: Endpoint alternativo (ajusta según tu API)
+                const response2 = await fetch(`http://localhost:8081/anikami/mangas/${mangaId}/capitulos`);
+                if (response2.ok) {
+                    const result = await response2.json();
+                    if (result.success && result.data) {
+                        // Filtrar por rango
+                        return result.data.filter(chap => 
+                            chap.numero >= start && chap.numero <= end
+                        ).sort((a, b) => a.numero - b.numero);
+                    }
+                }
+                
+                return [];
+                
+            } catch (error) {
+                console.error('Error en fetchChaptersFromAPI:', error);
+                return [];
+            }
+        }
+
+        function generateDemoChapters(start, end) {
+            const demoChapters = [];
+            for (let i = start; i <= end; i++) {
+                demoChapters.push({
+                    id: i,
+                    numero: i,
+                    titulo: `Capítulo ${i}`,
+                    descripcion: `Este es el capítulo ${i} del manga`,
+                    imagen_url: `https://via.placeholder.com/300x200/6f42c1/ffffff?text=Capítulo+${i}`,
+                    fecha_publicacion: new Date().toLocaleDateString()
+                });
+            }
+            chaptersCache[`${start}-${end}`] = demoChapters;
+            currentChapters = demoChapters;
+            displayChapters(demoChapters);
+        }
+
+        function displayChapters(chapters) {
+            const grid = document.getElementById('chaptersGrid');
+            const noChapters = document.getElementById('noChaptersMessage');
+            
+            if (!chapters || chapters.length === 0) {
+                grid.style.display = 'none';
+                noChapters.style.display = 'block';
+                return;
+            }
+            
+            grid.style.display = 'flex';
+            noChapters.style.display = 'none';
+            grid.innerHTML = '';
+            
+            chapters.forEach((chapter, index) => {
+                const isRead = readChapters.has(chapter.numero || chapter.id);
+                
+                const col = document.createElement('div');
+                col.className = 'col-md-4 col-lg-3';
+                
+                col.innerHTML = `
+                    <div class="card chapter-card bg-dark border-secondary h-100" 
+                         onclick="readChapter(${chapter.id}, ${index}, ${chapter.numero || chapter.id})">
+                        <div class="position-relative">
+                            <img src="${chapter.imagen_url || 'https://via.placeholder.com/300x200'}" 
+                                 class="chapter-thumbnail w-100" 
+                                 alt="Capítulo ${chapter.numero || chapter.id}"
+                                 onerror="this.src='https://via.placeholder.com/300x200'">
+                            ${isRead ? '<span class="position-absolute top-0 end-0 badge bg-success m-2">Leído</span>' : ''}
+                        </div>
+                        <div class="card-body">
+                            <div class="chapter-number">Capítulo ${chapter.numero || chapter.id}</div>
+                            <h6 class="card-title mt-1">${chapter.titulo || `Capítulo ${chapter.numero || chapter.id}`}</h6>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <small class="text-muted">
+                                    <i class="bi bi-calendar me-1"></i>
+                                    ${chapter.fecha_publicacion || 'Fecha no disponible'}
+                                </small>
+                                <span class="badge ${isRead ? 'bg-success' : 'bg-primary'}">
+                                    ${isRead ? 'Releer' : 'Leer'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(col);
+            });
+            
+            // Actualizar información del capítulo
+            document.getElementById('chapterInfo').textContent = 
+                `Mostrando capítulos ${currentRange.start}-${currentRange.end} de ${totalChapters}`;
+            
+            // Actualizar progreso
+            updateProgress();
+        }
+
+        function readChapter(chapterId, index, chapterNumber) {
+            // Marcar como leído
+            readChapters.add(chapterNumber);
+            localStorage.setItem(`read_${mangaId}`, JSON.stringify(Array.from(readChapters)));
+            
+            // Actualizar UI
+            updateProgress();
+            
+            // Aquí iría la navegación al lector de capítulos
+            window.location.href = `leer_capitulo.html?capituloId=${chapterId}&mangaId=${mangaId}&chapterNumber=${chapterNumber}`;
+        }
+
+        // ===== FUNCIONES DE NAVEGACIÓN =====
+        function setupNavigationButtons() {
+            document.getElementById('prevRangeBtn').onclick = () => {
+                if (currentRange.start > 1) {
+                    const newStart = Math.max(1, currentRange.start - 10);
+                    const newEnd = newStart + 9;
+                    const button = document.querySelector(`[data-start="${newStart}"]`);
+                    if (button) button.click();
+                }
+            };
+            
+            document.getElementById('nextRangeBtn').onclick = () => {
+                if (currentRange.end < totalChapters) {
+                    const newStart = currentRange.end + 1;
+                    const newEnd = Math.min(totalChapters, newStart + 9);
+                    const button = document.querySelector(`[data-start="${newStart}"]`);
+                    if (button) button.click();
+                }
+            };
+        }
+
+        function updateNavButtons() {
+            const prevBtn = document.getElementById('prevRangeBtn');
+            const nextBtn = document.getElementById('nextRangeBtn');
+            
+            prevBtn.disabled = currentRange.start <= 1;
+            nextBtn.disabled = currentRange.end >= totalChapters;
+        }
+
+        function jumpToSpecificChapter() {
+            const input = document.getElementById('jumpToChapter');
+            const chapterNum = parseInt(input.value);
+            
+            if (!chapterNum || chapterNum < 1 || chapterNum > totalChapters) {
+                alert(`Por favor ingresa un número entre 1 y ${totalChapters}`);
+                return;
+            }
+            
+            // Calcular el rango que contiene este capítulo
+            const start = Math.floor((chapterNum - 1) / 10) * 10 + 1;
+            const end = Math.min(start + 9, totalChapters);
+            
+            const button = document.querySelector(`[data-start="${start}"]`);
+            if (button) {
+                button.click();
+                // Scroll al capítulo específico después de cargar
+                setTimeout(() => {
+                    const chapterElement = document.querySelector(`[onclick*="chapterNumber=${chapterNum}"]`);
+                    if (chapterElement) {
+                        chapterElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }, 500);
+            }
+            
+            input.value = '';
+        }
+
+        // ===== FUNCIONES UTILITARIAS =====
+        function showLoading(show) {
+            document.getElementById('chaptersLoading').style.display = show ? 'block' : 'none';
+            document.getElementById('chaptersGrid').style.display = show ? 'none' : 'flex';
+        }
+
+        function showNoChapters() {
+            document.getElementById('chaptersLoading').style.display = 'none';
+            document.getElementById('chaptersGrid').style.display = 'none';
+            document.getElementById('noChaptersMessage').style.display = 'block';
+        }
+
+        function updateProgress() {
+            const progress = totalChapters > 0 ? 
+                (readChapters.size / totalChapters * 100).toFixed(0) : 0;
+            
+            document.getElementById('globalProgress').style.width = `${progress}%`;
+            
+            // Actualizar texto de marcado
+            document.getElementById('bookmarkText').textContent = 
+                readChapters.size > 0 ? `Continuar (${readChapters.size}/${totalChapters})` : 'Marcar';
+        }
+
+        function toggleBookmark() {
+            // Implementar lógica de marcado/desmarcado
+            alert('Funcionalidad de marcado en desarrollo');
+        }
+
+        function filterChapters() {
+            const showOnlyUnread = document.getElementById('showOnlyUnread').checked;
+            if (!currentChapters || currentChapters.length === 0) return;
+            
+            if (showOnlyUnread) {
+                const unreadChapters = currentChapters.filter(chapter => 
+                    !readChapters.has(chapter.numero || chapter.id)
+                );
+                displayChapters(unreadChapters);
+            } else {
+                displayChapters(currentChapters);
+            }
+        }
+
+        function scrollToChapters() {
+            document.getElementById('chaptersGrid').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function loadFirstChapter() {
+            if (totalChapters > 0) {
+                const start = 1;
+                const end = Math.min(10, totalChapters);
+                const button = document.querySelector(`[data-start="${start}"]`);
+                if (button) button.click();
+            }
+        }
+
+        function loadLatestChapter() {
+            if (totalChapters > 0) {
+                const start = Math.max(1, totalChapters - 9);
+                const end = totalChapters;
+                const button = document.querySelector(`[data-start="${start}"]`);
+                if (button) button.click();
+            }
+        }
+
+        function setupEventListeners() {
+            // Enter en el input de salto a capítulo
+            document.getElementById('jumpToChapter').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    jumpToSpecificChapter();
+                }
+            });
+            
+            // Actualizar navegación al cambiar de rango
+            document.addEventListener('rangeChanged', updateNavButtons);
+        }
+
+        function handleResponse(response) {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        }
+
+        // Función para simular cambio de rango
+        window.simulateRangeChange = function(start, end) {
+            const event = new CustomEvent('rangeChanged', { 
+                detail: { start, end } 
+            });
+            document.dispatchEvent(event);
+        };
+    </script>
+</body>
+</html>
