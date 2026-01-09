@@ -53,13 +53,11 @@ INSERT INTO mangas (titulo, descripcion, estado, portada_url) VALUES
 ('One Punch Man', 'Héroe invencible aburrido por su poder', 'En emisión', 'https://res.cloudinary.com/dcolydznr/image/upload/v1767053333/60d8a90c7208f-min_ymxuqb.jpg'),
 ('Otonari no Tenshi-sama', 'Romance dulce entre vecinos', 'Finalizado', 'https://res.cloudinary.com/dcolydznr/image/upload/v1767053408/63d1b481bed5e-min_k17ubu.jpg'),
 ('Sakamoto Days', 'Asesino legendario retirado y padre de familia', 'En emisión', 'https://res.cloudinary.com/dcolydznr/image/upload/v1767053437/606d97f6c7e83-min_tbmwvf.jpg'),
-('Shuumatsu no Valkyrie', 'Dioses contra humanos por la supervivencia', 'En emisión', 'https://res.cloudinary.com/dcolydznr/image/upload/v1767053468/5b62b-min_fglpjk.jpg'),
 ('SPY×FAMILY', 'Familia falsa para misión secreta', 'En emisión', 'https://res.cloudinary.com/dcolydznr/image/upload/v1767053502/sxf-min_oig2rs.jpg'),
 ('Tawawa on Monday', 'Historias cortas románticas y slice of life', 'En emisión', 'https://res.cloudinary.com/dcolydznr/image/upload/v1767053539/tawa01-min_pz2xx4.jpg'),
 ('Tougen Anki', 'Batallas entre descendientes de Oni y Momotaro', 'En emisión', 'https://res.cloudinary.com/dcolydznr/image/upload/v1767053571/5fe2b578b3968-min_kuuusp.jpg'),
 ('Yancha Gal no Anjo-san', 'Romance entre una gal extrovertida y un chico tímido', 'En emisión', 'https://res.cloudinary.com/dcolydznr/image/upload/v1767053607/YNG-min-480x675_crrin7.jpg'),
 ('Zom 100: Zombie ni Naru made ni Shitai 100 no Koto', 'Sobrevivir al apocalipsis zombie con lista de deseos', 'En emisión', 'https://res.cloudinary.com/dcolydznr/image/upload/v1767053633/63c2e9e03ff77-min_rzwb90.jpg');
-
 
 INSERT INTO manga_autor (manga_id, autor_id) VALUES
 (1, 1),   -- 2.5-jigen no Ririsa → Yuki Suenaga
